@@ -55,7 +55,7 @@ colorscheme gruvbox
 set background=dark
 let g:gruvbox_contrast_dark='default'
 
-let g:python3_host_prog = '$HOME/.virtualenvs/nvim_env/bin/python'
+let g:python3_host_prog = '/home/souphis/.virtualenvs/nvim_env/bin/python'
 
 set splitright
 set splitbelow
@@ -249,6 +249,21 @@ nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+
+let g:coc_global_extensions = ['coc-json', 'coc-git', 'coc-pyright', 'coc-cmake', 'coc-docker', 'coc-markdownlint', 'coc-prettier', 'coc-xml', 'coc-yaml', 'coc-snippets']
+
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+let g:coc_snippet_next = '<tab>'
 
 
 """""""""""""""""""""""""""""""""""Airline"""""""""""""""""""""""""""""""""""""
