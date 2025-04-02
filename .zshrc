@@ -5,10 +5,25 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-source "/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-source "/usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
-source "/usr/share/fzf/completion.zsh"
-source "/usr/share/fzf/key-bindings.zsh"
+if [[ -f /etc/os-release ]]; then
+    . /etc/os-release  # Source the file to get OS variables
+    if [[ "$ID" == "ubuntu" ]]; then
+        source "/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+        source "/usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+        source "$HOME/.fzf/shell/completion.zsh"
+        source "$HOME/.fzf/shell/key-bindings.zsh"
+    elif [[ "$ID" == "arch" ]]; then
+        source "/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+        source "/usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+        source "/usr/share/fzf/completion.zsh"
+        source "/usr/share/fzf/key-bindings.zsh"
+    else
+      echo "OS not supported"
+    fi
+else
+  echo "OS not supported"
+fi
+
 
 export LANG=en_US.UTF-8
 export ZSH=$HOME/.oh-my-zsh
