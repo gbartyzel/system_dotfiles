@@ -16,6 +16,21 @@ return {
 			popup_border_style = "rounded",
 			enable_git_status = true,
 			enable_diagnostics = true,
+			default_component_configs = {
+				git_status = {
+					symbols = {
+						added = "",
+						modified = "",
+						deleted = "",
+						renamed = "➜",
+						untracked = "★",
+						ignored = "◌",
+						unstaged = "✗",
+						staged = "✓",
+						conflict = "",
+					},
+				},
+			},
 			window = {
 				position = "left",
 				width = 40,
@@ -41,6 +56,12 @@ return {
 				"<cmd>FzfLua files<cr>",
 				mode = "n",
 				desc = "Fuzzy find files in current directory",
+			},
+			{
+				"<leader>fg",
+				"<cmd>FzfLua live_grep_native<cr>",
+				mode = "n",
+				desc = "Fuzzy live grep in current directory",
 			},
 			{
 				"<leader>fb",

@@ -2,7 +2,7 @@ return {
 	"neovim/nvim-lspconfig",
 	dependencies = {
 		{
-			"williamboman/mason.nvim",
+			"mason-org/mason.nvim",
 			keys = {
 				{
 					"<leader>m",
@@ -10,10 +10,35 @@ return {
 					mode = "n",
 				},
 			},
-			config = true,
+			opts = {
+				ui = {
+					border = "rounded",
+				},
+			},
 		},
-		"williamboman/mason-lspconfig.nvim",
-		"WhoIsSethDaniel/mason-tool-installer.nvim",
+		"mason-org/mason-lspconfig.nvim",
+		{
+			"WhoIsSethDaniel/mason-tool-installer.nvim",
+			opts = {
+				ensure_installed = {
+					"black",
+					"clang-format",
+					"cpplint",
+					"cpptools",
+					"cmakelang",
+					"isort",
+					"luacheck",
+					"markdownlint",
+					"mypy",
+					"prettier",
+					"prettierd",
+					"ruff",
+					"stylua",
+					"shfmt",
+					"vint",
+				},
+			},
+		},
 		"hrsh7th/cmp-nvim-lsp",
 	},
 	config = function()
@@ -23,28 +48,24 @@ return {
 			callback = function(event)
 				local map = function(keys, func, desc, mode)
 					mode = mode or "n"
-					vim.keymap.set(mode, keys, func, { buffer = event.buf })
+					vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = desc })
 				end
-
-				map("K", "<cmd>lua vim.lsp.buf.hover()<cr>")
-				map("gd", require("fzf-lua").lsp_definitions, "Go to definition")
-				map("gD", require("fzf-lua").lsp_declarations, "Go to declaration")
-				map("gi", require("fzf-lua").lsp_implementations, "Go to implementation")
-				map("go", require("fzf-lua").lsp_typedefs, "Go to type definition")
-				map("gr", require("fzf-lua").lsp_references, "Go to references")
-				map("gs", "<cmd>lua vim.lsp.buf.signature_help()<cr>")
-				map("\\w", require("fzf-lua").lsp_live_workspace_symbols, "Workspace symbols")
-				map("\\d", require("fzf-lua").lsp_document_symbols, "Document symbols")
-				map("\\r", "<cmd>lua vim.lsp.buf.rename()<cr>")
-				map("\\a", require("fzf-lua").lsp_code_actions, "Code actions")
-				map("gl", require("fzf-lua").lsp_document_diagnostics, "Document diagnostics")
-				map("[d", "<cmd>lua vim.diagnostic.goto_prev()<cr>")
-				map("]d", "<cmd>lua vim.diagnostic.goto_next()<cr>")
+				local fzf = require("fzf-lua")
+				map("K", vim.lsp.buf.hover, "Hover documentation")
+				map("gd", fzf.lsp_definitions, "Go to definition")
+				map("gD", fzf.lsp_declarations, "Go to declaration")
+				map("gi", fzf.lsp_implementations, "Go to implementation")
+				map("go", fzf.lsp_typedefs, "Go to type definition")
+				map("gr", fzf.lsp_references, "Go to references")
+				map("gs", vim.lsp.buf.signature_help, "Signature help")
+				map("<leader>lw", fzf.lsp_live_workspace_symbols, "Workspace symbols")
+				map("<leader>ld", fzf.lsp_document_symbols, "Document symbols")
+				map("<leader>lr", vim.lsp.buf.rename, "Rename symbol")
+				map("<leader>la", fzf.lsp_code_actions, "Code actions")
+				map("<leader>ll", fzf.diagnostics_document, "Document diagnostics")
+				map("[d", vim.diagnostic.goto_prev, "Previous diagnostic")
+				map("]d", vim.diagnostic.goto_next, "Next diagnostic")
 			end,
-		})
-
-		require("mason").setup({
-			ui = { border = "rounded" },
 		})
 
 		local servers = {
@@ -59,28 +80,6 @@ return {
 			"vimls",
 		}
 
-		require("mason-tool-installer").setup({
-			ensure_installed = {
-				"buildifier",
-				"bzl",
-				"black",
-				"clang-format",
-				"cpplint",
-				"cpptools",
-				"cmakelang",
-				"isort",
-				"luacheck",
-				"markdownlint",
-				"mypy",
-				"prettier",
-				"prettierd",
-				"ruff",
-				"stylua",
-				"shfmt",
-				"vint",
-			},
-		})
-
 		local lsp_capabilities = vim.lsp.protocol.make_client_capabilities()
 		lsp_capabilities =
 			vim.tbl_deep_extend("force", lsp_capabilities, require("cmp_nvim_lsp").default_capabilities())
@@ -89,10 +88,10 @@ return {
 			ensure_installed = servers,
 			handlers = {
 				function(server_name)
-					local server = servers[server_name] or {}
-					server.capabilities = vim.tbl_deep_extend("force", {}, lsp_capabilities, server.capabilities or {})
-					-- server.capabilities = require("blink.cmp").get_lsp_capabilities(server.capabilities)
-					require("lspconfig")[server_name].setup(server)
+					vim.lsp.config(server_name, {
+						capabilities = lsp_capabilities,
+					})
+					vim.lsp.enable(server_name)
 				end,
 			},
 		})
