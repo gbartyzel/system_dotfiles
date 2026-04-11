@@ -41,6 +41,9 @@ export UPDATE_ZSH_DAYS=13
 
 plugins=(git fzf sudo tmux)
 
+# Custom completions (e.g. alacritty on Ubuntu — built from source)
+fpath+=(~/.zsh_functions)
+
 source $ZSH/oh-my-zsh.sh
 
 if [ -f $HOME/.zsh_path ]; then

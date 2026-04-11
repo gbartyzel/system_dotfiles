@@ -1,0 +1,46 @@
+[general]
+live_config_reload = true
+
+[env]
+TERM = "xterm-256color"
+
+[font]
+normal = {family = "Inconsolata Nerd Font", style = "Regular"}
+bold = {family = "Inconsolata Nerd Font", style = "Bold"}
+italic = {family = "Inconsolata Nerd Font", style = "Italic"}
+bold_italic = {family = "Inconsolata Nerd Font", style = "Bold Italic"}
+size = 11.0
+
+[font.offset]
+x = 1
+y = 0
+
+[scrolling]
+multiplier = 5
+
+[window]
+decorations = "Buttonless"
+
+[colors.primary]
+background = '#282828'
+foreground = '#dfbf8e'
+
+[colors.normal]
+black   = '#665c54'
+red     = '#ea6962'
+green   = '#a9b665'
+yellow  = '#e78a4e'
+blue    = '#7daea3'
+magenta = '#d3869b'
+cyan    = '#89b482'
+white   = '#dfbf8e'
+
+[colors.bright]
+black   = '#928374'
+red     = '#ea6962'
+green   = '#a9b665'
+yellow  = '#e3a84e'
+blue    = '#7daea3'
+magenta = '#d3869b'
+cyan    = '#89b482'
+white   = '#dfbf8e'
