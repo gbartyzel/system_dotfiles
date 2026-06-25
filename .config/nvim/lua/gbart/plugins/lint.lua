@@ -45,7 +45,7 @@ return {
 			linters = {
 				cpp = { "cpplint", "clangtidy" },
 				python = { "ruff" },
-				cmake = { "cmakelint" },
+				-- cmake = { "cmakelint" },
 				lua = { "luacheck" },
 				markdown = { "markdownlint" },
 			},

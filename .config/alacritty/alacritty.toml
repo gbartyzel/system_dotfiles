@@ -44,3 +44,7 @@ blue    = '#7daea3'
 magenta = '#d3869b'
 cyan    = '#89b482'
 white   = '#dfbf8e'
+
+[terminal.shell]
+program = "/usr/bin/tmux"
+args = ["new", "-A", "-s", "main"]
