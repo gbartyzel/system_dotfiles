@@ -57,6 +57,6 @@ fi
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-. "$HOME/.local/bin/env"
+# . "$HOME/.local/bin/env"
 export NVD_BACKEND=direct
 export MOZ_DISABLE_RDD_SANDBOX=1
