@@ -98,6 +98,7 @@ return {
 				},
 				virtualtext = {
 					auto_trigger_ft = { "*" },
+					auto_trigger_ignore_ft = {},
 					keymap = {
 						accept = "<C-a>",
 						accept_line = "<A-a>",
@@ -105,6 +106,7 @@ return {
 						prev = "<A-p>",
 						dismiss = "<A-e>",
 					},
+					show_on_completion_menu = true,
 				},
 			})
 		end,
@@ -124,7 +126,7 @@ return {
 			providers = {
 				ollama = {
 					endpoint = "http://127.0.0.1:11434",
-					model = "ornith:7b",
+					model = "ornith:9b",
 					timeout = 30000,
 					extra_request_body = {
 						options = {
