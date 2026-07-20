@@ -3,7 +3,6 @@ return {
 		"hrsh7th/nvim-cmp",
 		event = "InsertEnter",
 		dependencies = {
-
 			{
 				"L3MON4D3/LuaSnip",
 				build = (function()
@@ -84,12 +83,14 @@ return {
 				provider = "openai_fim_compatible",
 				n_completions = 1,
 				context_window = 512,
+				request_timeout = 10,
 				provider_options = {
 					openai_fim_compatible = {
 						api_key = "TERM",
 						name = "Ollama",
 						end_point = "http://127.0.0.1:11434/v1/completions",
 						model = "qwen2.5-coder:1.5b",
+						stream = true,
 						optional = {
 							max_tokens = 512,
 							top_p = 0.9,
