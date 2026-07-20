@@ -113,30 +113,67 @@ return {
 		end,
 	},
 	{
-		"yetone/avante.nvim",
-		event = "VeryLazy",
-		build = "make",
+		"olimorris/codecompanion.nvim",
 		dependencies = {
-			"stevearc/dressing.nvim",
 			"nvim-lua/plenary.nvim",
-			"MunifTanjim/nui.nvim",
 			"nvim-treesitter/nvim-treesitter",
+			"stevearc/dressing.nvim", -- Improves the UI for selecting models and actions
 		},
 		opts = {
-			provider = "ollama",
-			providers = {
-				ollama = {
-					endpoint = "http://127.0.0.1:11434",
-					model = "ornith:9b",
-					timeout = 30000,
-					extra_request_body = {
-						options = {
-							temperature = 0,
-							top_p = 0.9,
-						},
+			-- Configure the Ollama adapter to use ornith:9b by default
+			adapters = {
+				http = {
+					ollama = function()
+						return require("codecompanion.adapters").extend("ollama", {
+							schema = {
+								model = {
+									default = "ornith:9b",
+								},
+							},
+							env = {
+								url = "http://127.0.0.1:11434",
+							},
+						})
+					end,
+				},
+			},
+			-- Set Ollama as the default engine for all interactions
+			interactions = {
+				chat = {
+					adapter = "ollama",
+				},
+				inline = {
+					adapter = "ollama",
+				},
+				cmd = {
+					adapter = "ollama",
+				},
+			},
+			-- Configure standard UI options
+			display = {
+				chat = {
+					window = {
+						layout = "vertical", -- Keeps a familiar sidebar layout
+						width = 0.3,
 					},
 				},
 			},
+		},
+		keys = {
+			-- Useful keymaps for your workflow
+			{
+				"<leader>ca",
+				"<cmd>CodeCompanionActions<cr>",
+				mode = { "n", "v" },
+				desc = "CodeCompanion Actions Palette",
+			},
+			{
+				"<leader>cc",
+				"<cmd>CodeCompanionChat Toggle<cr>",
+				mode = { "n", "v" },
+				desc = "Toggle CodeCompanion Chat",
+			},
+			{ "<leader>ce", "<cmd>CodeCompanion<cr>", mode = "v", desc = "CodeCompanion Inline Edit" },
 		},
 	},
 	-- {
