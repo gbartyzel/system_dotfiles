@@ -73,7 +73,7 @@ return {
 			})
 		end,
 	},
-	{
+  {
 		"milanglacier/minuet-ai.nvim",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
@@ -117,50 +117,49 @@ return {
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-treesitter/nvim-treesitter",
-			"stevearc/dressing.nvim", -- Improves the UI for selecting models and actions
+			"stevearc/dressing.nvim",
 		},
 		opts = {
-			-- Configure the Ollama adapter to use ornith:9b by default
+			-- Custom adapter pointing to llama-server on port 8000
 			adapters = {
 				http = {
-					ollama = function()
-						return require("codecompanion.adapters").extend("ollama", {
+					llama_server = function()
+						return require("codecompanion.adapters").extend("openai_compatible", {
+							env = {
+								url = "http://127.0.0.1:8000",
+								api_key = "TERM", -- Dummy key required by OpenAI client
+							},
 							schema = {
 								model = {
 									default = "ornith:9b",
 								},
 							},
-							env = {
-								url = "http://127.0.0.1:11434",
-							},
 						})
 					end,
 				},
 			},
-			-- Set Ollama as the default engine for all interactions
+			-- Route chat, inline edits, and commands to llama_server
 			interactions = {
 				chat = {
-					adapter = "ollama",
+					adapter = "llama_server",
 				},
 				inline = {
-					adapter = "ollama",
+					adapter = "llama_server",
 				},
 				cmd = {
-					adapter = "ollama",
+					adapter = "llama_server",
 				},
 			},
-			-- Configure standard UI options
 			display = {
 				chat = {
 					window = {
-						layout = "vertical", -- Keeps a familiar sidebar layout
+						layout = "vertical",
 						width = 0.3,
 					},
 				},
 			},
 		},
 		keys = {
-			-- Useful keymaps for your workflow
 			{
 				"<leader>ca",
 				"<cmd>CodeCompanionActions<cr>",
